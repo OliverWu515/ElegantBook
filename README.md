@@ -7,6 +7,30 @@
 
 -------
 
+该模板基于 [ElegantBook-4.5](https://github.com/ElegantLaTeX/ElegantBook) 修改而来，用于[《线性代数应该这样学》（第四版）中文译本](https://github.com/OliverWu515/LADR4e-PDF) 的排版。
+
+This template is adapted from [ElegantBook-4.5](https://github.com/ElegantLaTeX/ElegantBook) and is used for typesetting the [Chinese translation of *Linear Algebra Done Right* (4th edition)](https://github.com/OliverWu515/LADR4e-PDF).
+
+其中主要的修改在 `ElegantBook.cls` 中使用注释 `% NEW:` 进行了标记，主要包括：
+
+The main changes are marked with `%NEW:` comments in `ElegantBook.cls`, mainly including:
+
+- 适配 *Linear Algebra Done Right* (4th edition) 原书（下称 LADR4e）不区分定理、引理和命题的写作习惯，统一使用 `theorem` 环境进行排版。
+- 适配 LADR 原书的示例（`example`）、章首图片（`artworkfigure`）和边注框（`commentbox`）等。
+- 样式调整：包括目录、页眉、页脚、图题、表题和页码等。
+- 新增样式：添加了 `tcolorbox` 中的“转下页”标记等。
+- 修复了原模板的一些 bug。
+
+- To match the writing convention in LADR (where theorems, lemmas, and propositions are not distinguished), everything is typeset using a unified `theorem` environment.
+- Adaptations for LADR-specific elements such as examples (`example`), chapter-opening artwork (`artworkfigure`), and margin note boxes (`commentbox`).
+- Style adjustments, including the table of contents, headers, footers, figure/table captions, and page numbers.
+- New styles, such as a “continued on next page” marker for `tcolorbox`.
+- Fixes for some bugs in the original template.
+
+以下为原模板信息。
+
+Below is the original template information.
+
 # ElegantBook: 优美的 LaTeX 书籍模板 An Elegant LaTeX Template for Books 
 
 ElegantBook 是为 LaTeX 书籍写作而设计的模板，由 [Ethan Deng](https://github.com/EthanDeng) 和 [Liam Huang](https://github.com/Liam0205) 创立，现在主要由 [Ethan Deng](https://github.com/EthanDeng)、[乙醇](https://github.com/syvshc)和[死抠](https://github.com/sikouhjw)维护。如果你有其他问题、建议或者报告 bug，可以提交 issues 或者加入我们的 QQ 用户交流群：692108391。
