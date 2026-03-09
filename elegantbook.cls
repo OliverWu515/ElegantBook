@@ -62,6 +62,8 @@
 
 \DeclareVoidOption{normal}{\ekv{device=normal}}
 \DeclareVoidOption{pad}{\ekv{device=pad}}
+% NEW: B5 geometry
+\DeclareVoidOption{printing}{\ekv{device=printing}}
 
 \DeclareStringOption[numeric-comp]{citestyle}
 \DeclareStringOption[numeric]{bibstyle}
@@ -104,6 +106,17 @@
 \RequirePackage{setspace}
 
 \RequirePackage{csquotes}
+% NEW
+\RequirePackage[nottoc,notindex]{tocbibind}
+\usepackage[xindy,splitindex]{imakeidx}
+\usepackage[totoc,itemlayout=relhang,unbalanced]{idxlayout}
+% NEW: 图题、表题样式更改
+\RequirePackage{graphicx}
+\RequirePackage[labelfont={bf,color=structurecolor}]{caption} 
+\captionsetup[table]{skip=3pt}
+\captionsetup[figure]{skip=3pt}
+\DeclareCaptionFont{citshape}{\citshape}
+\captionsetup{font={citshape,stretch=1.2}}
 
 
 \RequirePackage{hyperref}
@@ -123,6 +136,8 @@
   pdfborder={0 0 0},
   linktocpage
 }
+% NEW: pdf 书签
+\usepackage{bookmark}
 \newif\ifELEGANT@Hy@later
   \@ifpackagelater{hyperref}{2022/05/16}
     {\ELEGANT@Hy@latertrue}
@@ -141,10 +156,22 @@
   }
   \ifdefstring{\ELEGANT@marginpar}{margintrue}{
     \geometry{
-      marginparwidth=5cm, marginparsep=5mm,
-      left=2cm,right=7cm}}{\relax}}{
+      marginparwidth=4.59cm, marginparsep=5mm,
+      left=1.91cm,right=7cm
+      }}{\relax}}{
     \relax}
 
+% NEW: B5 geometry
+\ifdefstring{\ELEGANT@device}{printing}{
+  \geometry{
+    b5paper,
+    top=12.7mm, bottom=12.7mm,
+    left=12.7mm, right=12.7mm,
+    headheight=5mm,
+    headsep=3mm,
+    footskip=8mm
+  }}{\relax}
+      
 \ifdefstring{\ELEGANT@device}{pad}{
 \geometry{
   paperwidth=7.5in, 
@@ -162,7 +189,8 @@
   \RequirePackage[lite]{mtpro2}
 }{\relax}
 
-\setcounter{tocdepth}{1}
+% NEW: 目录显示所有层级
+% \setcounter{tocdepth}{1}
 \renewcommand{\baselinestretch}{1.2}
 
 \PassOptionsToPackage{no-math}{fontspec}
@@ -191,20 +219,39 @@
     Scale = 0.9]
 \fi
 
+% NEW: 句号采用点号而不是圆圈；标点符号一律采用宋体
 \ifdefstring{\ELEGANT@lang}{cn}{
   \ifdefstring{\ELEGANT@chinesefont}{founder}{
     \RequirePackage[UTF8, scheme=plain, fontset=none]{ctex}
-    \setCJKmainfont[BoldFont={FZHei-B01},ItalicFont={FZKai-Z03}]{FZShuSong-Z01}
-    \setCJKsansfont[BoldFont={FZHei-B01}]{FZKai-Z03}
-    \setCJKmonofont[BoldFont={FZHei-B01}]{FZFangSong-Z02}
-    \setCJKfamilyfont{zhsong}{FZShuSong-Z01}
-    \setCJKfamilyfont{zhhei}{FZHei-B01}
-    \setCJKfamilyfont{zhkai}[BoldFont={FZHei-B01}]{FZKai-Z03}
-    \setCJKfamilyfont{zhfs}[BoldFont={FZHei-B01}]{FZFangSong-Z02}
+    % \setCJKmainfont[BoldFont={FZHei-B01},ItalicFont={FZKai-Z03}]{FZShuSong-Z01}
+    % \setCJKsansfont[BoldFont={FZHei-B01}]{FZKai-Z03}
+    % \setCJKmonofont[BoldFont={FZHei-B01}]{FZFangSong-Z02}
+    % \setCJKfamilyfont{zhsong}{FZShuSong-Z01}
+    % \setCJKfamilyfont{zhhei}{FZHei-B01}
+    % \setCJKfamilyfont{zhkai}[BoldFont={FZHei-B01}]{FZKai-Z03}
+    % \setCJKfamilyfont{zhfs}[BoldFont={FZHei-B01}]{FZFangSong-Z02}
+    \setCJKmainfont[Mapping=fullwidth-stop, BoldFont={FZHei-B01}, ItalicFont={FZKai-Z03}]{FZShuSong-Z01}
+    \setCJKsansfont[Mapping=fullwidth-stop, BoldFont={FZHei-B01}]{FZKai-Z03}
+    \setCJKmonofont[Mapping=fullwidth-stop, BoldFont={FZHei-B01}]{FZFangSong-Z02}
+    \setCJKfamilyfont{zhsong}[Mapping=fullwidth-stop, BoldFont={FZHei-B01}]{FZShuSong-Z01}
+    \setCJKfamilyfont{zhhei}[Mapping=fullwidth-stop]{FZHei-B01}
+    \setCJKfamilyfont{zhkai}[Mapping=fullwidth-stop, BoldFont={FZHei-B01}]{FZKai-Z03}
+    \setCJKfamilyfont{zhfs}[Mapping=fullwidth-stop, BoldFont={FZHei-B01}]{FZFangSong-Z02} 
     \newcommand*{\songti}{\CJKfamily{zhsong}}
     \newcommand*{\heiti}{\CJKfamily{zhhei}}
     \newcommand*{\kaishu}{\CJKfamily{zhkai}}
-    \newcommand*{\fangsong}{\CJKfamily{zhfs}}}{\relax}
+    \newcommand*{\fangsong}{\CJKfamily{zhfs}}
+    \RequirePackage{newunicodechar}
+    \newunicodechar{，}{{\songti，}}
+    \newunicodechar{（}{{\songti（}}
+    \newunicodechar{）}{{\songti）}}
+    \newunicodechar{【}{{\songti【}}
+    \newunicodechar{】}{{\songti】}}
+    \newunicodechar{；}{{\songti；}}
+    \newunicodechar{“}{{\songti“}}
+    \newunicodechar{”}{{\songti”}}
+    \newunicodechar{。}{{\songti．}}
+    }{\relax}
   
   \ifdefstring{\ELEGANT@chinesefont}{nofont}{
     \RequirePackage[UTF8,scheme=plain,fontset=none]{ctex}
@@ -361,6 +408,8 @@
 \newcommand{\version}[1]{\gdef\@version{#1}}
 \newcommand{\extrainfo}[1]{\gdef\@extrainfo{#1}}
 
+% NEW: “转下页”标记需要用到 fontawesome 字体
+\RequirePackage{fontawesome}
 \RequirePackage{mwe}
 \newcommand{\logo}[1]{\gdef\@logo{#1}}
 \newcommand{\cover}[1]{\gdef\@cover{#1}}
@@ -372,10 +421,6 @@
 \RequirePackage[shortlabels,inline]{enumitem}
 \setlist{nolistsep}
 
-\RequirePackage[labelfont={bf,color=structurecolor}]{caption} 
-\captionsetup[table]{skip=3pt}
-\captionsetup[figure]{skip=3pt}
-
 \AtBeginDocument{
   \setlength{\abovedisplayskip}{3pt}
   \setlength{\belowdisplayskip}{3pt}
@@ -385,15 +430,15 @@
 
 
 
-\RequirePackage{graphicx}
 %\RequirePackage{enumerate}
 \RequirePackage{amsmath,mathrsfs,amsfonts,amssymb}
-% \providecommand\qed{}
-% \renewcommand{\qed}{\hfill\ensuremath{\square}}
+\newcommand{\qedsinglesymbol}{\leavevmode\unskip\penalty9999 \hbox{}\nobreak\hfill~\hbox{\ensuremath{\textcolor{second}\blacksquare}}}
 \RequirePackage{booktabs}
 \RequirePackage{multicol,multirow}
 
 \RequirePackage{fancyvrb}
+% NEW: 浮动图片/边注框支持（见下 commentbox）
+\RequirePackage{wrapfig}
 \RequirePackage{makecell,lipsum,hologo}
 %%中文结构名字
 
@@ -425,6 +470,11 @@
   \newcommand\figref[1]{\textbf{图}~\ref{#1}}
   \newcommand\tabref[1]{\textbf{表}~\ref{#1}}
   \newcommand{\authorname}{\citshape 作者：}
+  % NEW: 作者、译者标记
+  \newcommand{\oriauthorname}{\citshape 原著：}
+  \newcommand{\transauthorname}{\citshape 译者：}
+  \newcommand\oriauthor[1]{\gdef\@oriauthor{#1}}
+  \newcommand\transauthor[1]{\gdef\@transauthor{#1}}
   \newcommand{\institutename}{\citshape 组织：}
   \newcommand{\datename}{\citshape 时间：}
   \newcommand{\versionname}{\citshape 版本：}
@@ -437,16 +487,17 @@
   \newcommand{\lemmaname}{引理}
   \newcommand{\propositionname}{命题}
   \newcommand{\corollaryname}{推论}
-  \newcommand{\examplename}{例题} %
+  \newcommand{\examplename}{例} %例题
   \newcommand{\instancename}{示例} %
   \newcommand{\problemname}{问题} % 问题
-  \newcommand{\exercisename}{练习} % 练习=习题
+  \newcommand{\exercisename}{习题} % 练习=习题
   \newcommand{\remarkname}{注}
   \newcommand{\assumptionname}{假设}
   \newcommand{\conclusionname}{结论}
   \newcommand{\solutionname}{解}
   \newcommand{\propertyname}{性质}
   \newcommand{\introductionname}{内容提要}
+  \newcommand{\hintname}{提示}
   \newcommand\bioinfo[2]{\gdef\@bioinfo{{\citshape #1}：#2}}
   \newcommand{\updatename}{更新：}
   \newcommand{\historyname}{版本更新历史}
@@ -885,7 +936,8 @@
 
 \titlespacing{\chapter}{0pt}{-20pt}{1.3\baselineskip}
 %\titlespacing{\subsection}{0pt}{0.5\baselineskip}{-\baselineskip}
-
+% 节编号样式
+\renewcommand{\thesection}{\arabic{chapter}\Alph{section}}
 
 
 %%define the 
@@ -907,18 +959,23 @@
     new/usesamecnt/.style = {}
   }
 \fi
-
+\def\ifEqString#1#2{\def\testa{#1}\def\testb{#2}%
+  \ifx\testa\testb}
 \ifdefstring{\ELEGANT@mode}{fancy}{
   \tcbset{
     common/.style={
-      fontupper=\citshape,
+      % NEW: 强制定理框等占据一整行
+      width=\textwidth,
+      % fontupper=\citshape,
       lower separated=false,
       % before upper={\setlength{\parindent}{\normalparindent}},
       coltitle=white,
       colback=gray!5,
+      % use counter = ELEGANT@samecnt,
       boxrule=0.5pt,
       fonttitle=\bfseries,
       enhanced,
+      minipage boxed title*=-40pt,  % NEW: 长标题可换行
       breakable,
       top=8pt,
       before skip=8pt,
@@ -936,16 +993,24 @@
       colframe=main,  
       colback=main!5,
       colbacktitle=main, 
-      overlay unbroken and last={
-        \node[anchor=south east, outer sep=0pt] at (\linewidth-width,0) {
+      % NEW: “转下页”标记
+      overlay first={\node[anchor=south east, outer sep=0pt] at (\textwidth,0) { %
+  \begin{nextbox}\textcolor{black}{\cnormal 转下页\faToggleDown}\end{nextbox}};},
+      overlay unbroken and last={%
+        % \node[anchor=south east, outer sep=0pt] at (\linewidth-width,0) {
+        \node[anchor=south east, outer sep=0pt] at (\textwidth,0) {
           \textcolor{main}{$\clubsuit$}};}},
     thmstyle/.style={
       common,
       colframe=second,  
       colback=second!5,
       colbacktitle=second, 
+      % NEW: “转下页”标记
+      overlay first={\node[anchor=south east, outer sep=0pt] at (\textwidth,0) { %
+      \begin{nextbox}\textcolor{black}{\cnormal 转下页\faToggleDown}\end{nextbox}};},
       overlay unbroken and last={
-        \node[anchor=south east, outer sep=0pt] at (\linewidth-width,0) {
+        % \node[anchor=south east, outer sep=0pt] at (\linewidth-width,0) {
+        \node[anchor=south east, outer sep=0pt] at (\textwidth,0) {
           \textcolor{second}{$\heartsuit$}};}},
     prostyle/.style={
       common,
@@ -962,9 +1027,15 @@
           {
             title=
               {
-                \csname #1name\endcsname~%
+                %use counter=equation
+                % NEW: 若为定理环境，则不出现“定理：”的标记
                 \ifdef{\thetcbcounter}{\thetcbcounter}{}%
-                \ifblank{#2}{}{\ (#2)}
+                \quad%
+                \ifEqString{#1}{theorem}\else \csname #1name\endcsname：\fi%
+                % \csname #1name\endcsname~%
+                % \ifdef{\thetcbcounter}{\thetcbcounter}{}%
+                % NEW: 编号不用括号括起来
+                \ifblank{#2}{}{#2}
               }
           }
       },
@@ -998,7 +1069,10 @@
         new/usecnt/.style= {use counter from = #4}
       }
     }
-    \DeclareTColorBox[auto counter,number within=\ELEGANT@thmcnt,usesamecnt,usecnt]{#1}{ g o t\label g }{
+    % \DeclareTColorBox[auto counter,number within=\ELEGANT@thmcnt,usesamecnt,usecnt]{#1}{ g o t\label g }{
+    % NEW: Axler 书特色，定义、定理、公式、例子等编号一律连续
+    \DeclareTColorBox[use counter*=equation,number within=\ELEGANT@thmcnt,usesamecnt,usecnt]{#1}{ g o t\label g }{
+    % \DeclareTColorBox[auto counter,number within=\ELEGANT@thmcnt,usesamecnt,usecnt]{#1}{ g o t\label g }{
         common,#3,
         IfValueTF={##1}
           {ELEGANT@title={#1}{##1}}
@@ -1154,15 +1228,72 @@
 % main（green-def): example exercise problem solution
 % second（orange-thm）: proof note remark  
 % third（blue-prop):  assumptions property conclusion custom
+% NEW: 重新定义“例”环境，连续编号，上下分别加灰线和黑线
+\newtcolorbox{eqbox}
+{
+  % colback=gray!10,
+  % arc=0pt,
+  % boxrule=0pt,
+  % % title=#1,
+  % frame hidden,
+  enhanced,
+  % colback=yellow!10!white,
+  width=\textwidth,
+  colback=white,
+  boxrule=0pt,frame hidden,
+  borderline north={0.5mm}{0mm}{gray},
+  borderline south={1mm}{0mm}{black},
+  breakable,
+  left skip=0pt,
+  right skip=0pt,
+  left=0mm,
+  right=0mm,
+  overlay first and middle={\node[anchor=south east, outer sep=0pt] at (\textwidth,0) {
+    \begin{tcolorbox}[enhanced,nobeforeafter,width=5em,colback=gray!15!white,arc=0.5mm,frame hidden,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt]
+      \textcolor{black}{\cnormal 转下页\faToggleDown}
+    \end{tcolorbox}};},
+  before upper={\parindent2em}
+}
+% NEW: 新定义“步骤”环境，有点类似 markdown 的 > 样式
+\newtcolorbox{stepbox}{
+  enhanced,
+  width=\textwidth,
+  colback=white,
+  coltext=black!90,
+  boxrule=0pt,frame hidden,
+  borderline west={0.5mm}{0mm}{gray},
+  breakable,
+  left skip=1em, right skip=0pt, before skip=0.5em, after skip=0.5em,
+  left=0mm, right=0mm, top=0pt, bottom=0pt,
+  before upper={\parindent2em}
+}
+
+\newtcolorbox{nextbox}{
+  enhanced,width=5em,nobeforeafter,colback=gray!15!white,arc=0.5mm,frame hidden,boxsep=1pt,left=1pt,right=1pt,top=1pt,bottom=1pt
+}
 
 %% Example with counter
 \newcounter{exam}[chapter]
 \setcounter{exam}{0}
 \renewcommand{\theexam}{\thechapter.\arabic{exam}}
+% NEW: 重新定义“例”环境，连续编号，上下分别加灰线和黑线
 \newenvironment{example}[1][]{
-  \refstepcounter{exam}
-  \par\noindent\textbf{\color{main}{\examplename} \theexam #1 }\rmfamily}{
-  \par\ignorespacesafterend}
+  \refstepcounter{equation}
+  \begin{eqbox}
+  % \refstepcounter{exam}
+  % \vspace{5pt}
+  % \hrule
+  % \vspace{3pt}
+  % \par\noindent\textbf{\color{third}\theequation\quad{\examplename}：#1 }\rmfamily\par}{
+    \par\noindent\textbf{\color{black}\theequation\quad{\examplename}：#1 }\rmfamily\par}{
+  % \par
+  % \nopagebreak
+  % \vspace{3pt}
+  % \hrule
+  % \vspace{5pt}
+  \end{eqbox}
+  }
+  % \par\ignorespacesafterend}
 
 %% Exercise with counter
 \newcounter{exer}[chapter]
@@ -1188,20 +1319,28 @@
   \par\noindent\makebox[-3pt][r]{
     \scriptsize\color{red!90}\textdbend\quad}
     \textbf{\color{second}\notename} \citshape}{\par}
+% NEW: 习题中的“提示”
+\newenvironment{hint}{
+  \par\noindent\textbf{\color{second}\hintname}\quad\citshape}{\par}
 
+% NEW: qed 记号保护
 \newenvironment{proof}{
-  \par\noindent\textbf{\color{second}\proofname\;}
-  \color{black!90}\cfs}{
-  % \hfill$\Box$\quad
+  \par\noindent\textbf{\color{second}\proofname\;}\cfs\enspace\color{black!90}
+  }{\leavevmode\unskip\penalty9999 \hbox{}\nobreak\hfill%
+  \quad\hbox{\ensuremath{\textcolor{second}\blacksquare}}%
   \par}
 
+% NEW: 不带 qed 记号的 proof (可手动通过 \qedsinglesymbol 添加 qed 记号)
+\newenvironment{proof*}{\par\noindent\textbf{\color{second}\proofname\;}\cfs\enspace\color{black!90}}{\par}
+
 \newenvironment{solution}{\par\noindent\textbf{\color{main}\solutionname} \citshape}{\par}
-\newenvironment{remark}{\noindent\textbf{\color{second}\remarkname}}{\par}
+% NEW: 习题中的“注”
+\newenvironment{remark}{\par\noindent\textbf{\color{second}\remarkname}\quad\citshape}{\par}
 \newenvironment{assumption}{\par\noindent\textbf{\color{third}\assumptionname} \citshape}{\par}
 \newenvironment{conclusion}{\par\noindent\textbf{\color{third}\conclusionname} \citshape}{\par}
 \newenvironment{property}{\par\noindent\textbf{\color{third}\propertyname} \citshape}{\par}
 \newenvironment{custom}[1]{\par\noindent\textbf{\color{third} #1} \citshape}{\par}
-
+\RequirePackage{amssymb}
 \RequirePackage{multicol}
 \tcbset{
   introductionsty/.style={
@@ -1233,16 +1372,30 @@
 
 \RequirePackage{adforn}
 
-\newenvironment{problemset}[1][\xchaptertitle~\exercisename]{
+% NEW: 重定义习题列表环境，习题编号仅有一个加粗数字，引用时为一个不加粗的数字
+% \newenvironment{problemset}[1][\exercisename]{
+\newenvironment{problemset}[1][\exercisename]{
+  \par
   \vspace*{10pt}
   \begin{center}
-    \phantomsection\addcontentsline{toc}{section}{\texorpdfstring{\xchaptertitle~\exercisename}{\exercisename}}
+    \phantomsection\addcontentsline{toc}{subsection}{\exercisename\thesection}
     % \markboth{#1}{\rightmark}
-    \markright{#1}
-    \textcolor{structurecolor}{\Large\bfseries\adftripleflourishleft~#1~\adftripleflourishright}
+    % \markright{\exercisename\thesection}
+    \textcolor{structurecolor}{\Large\bfseries\adftripleflourishleft~\exercisename\thesection~\adftripleflourishright}
   \end{center}
-  \begin{enumerate}}{
+  \begin{enumerate}[label={\textbf{\arabic*}},ref={\arabic*},leftmargin=1.5em]}{
   \end{enumerate}}
+
+% NEW: 边注框
+\newcommand{\commentbox}[1]{
+  \begin{wrapfigure}{R}{0.5\textwidth}
+  	\vspace{-5pt}
+  \begin{tcolorbox}[enhanced,width=0.5\textwidth,nobeforeafter,colback=gray!15!white,arc=2mm,frame hidden,boxsep=1pt,left=5pt,right=5pt,top=1pt,bottom=1pt]
+   {\citshape #1}
+  \end{tcolorbox}
+  \vspace{-17pt}
+  \end{wrapfigure}
+}
 
 \def\relsec{\endgroup start}
 \def\endrelsec{end\begingroup\def \@currenvir {relsec}}
@@ -1260,22 +1413,37 @@
 \RequirePackage{fancyhdr}
 \fancyhf{}
 
+% NEW: Axler 的页码“小巧思”
+\newcommand{\custompage}{%
+  \ifnumequal{\value{page}}{272}{$\approx 100\mathrm{e}$}{%
+    \ifnumequal{\value{page}}{314}{$\approx 100\mathrm{\pi}$}{%
+      \ifnumequal{\value{page}}{141}{$\approx 100\sqrt{2}$}{%
+        \ifnumequal{\value{page}}{22}{$\approx 7\mathrm{\pi}$}{\thepage}%
+        }%
+      }%
+  }%
+}
 
-\fancyfoot[c]{\color{structurecolor}\small\thepage}
+% \fancyfoot[c]{\color{structurecolor}\small\thepage}
+% NEW: 重定义页眉页脚样式（按奇偶数页，居中章或节名，左或右显示页码）
 \if@twoside
-  \fancyhead[EL]{\color{structurecolor}\cnormal\leftmark}
-  \fancyhead[OR]{\color{structurecolor}\cnormal\rightmark}
+  \fancyhead[EC]{\color{structurecolor}\cnormal\leftmark}
+  \fancyhead[EL]{\color{structurecolor}{\bf\custompage}}
+  \fancyhead[OC]{\color{structurecolor}\cnormal\rightmark}
+  \fancyhead[OR]{\color{structurecolor}{\bf\custompage}}
 \else
   \fancyhead[R]{\color{structurecolor}\cnormal\rightmark}
 \fi
-
-\renewcommand{\headrule}{\color{structurecolor}\hrule width\textwidth}
+% NEW: 重定义标题线
+\renewcommand{\headrule}{\color{structurecolor}\hrule}
+% \renewcommand{\headrule}{\color{structurecolor}\hrule width\textwidth}
 \pagestyle{fancy}
 \renewcommand{\headrulewidth}{1pt}
 % \renewcommand{\headrule}{}
-\fancypagestyle{plain}{\renewcommand{\headrulewidth}{0pt}\fancyhf{}\renewcommand{\headrule}{}}
-\renewcommand{\sectionmark}[1]{\markright{\thesection\, #1}{}}
-\renewcommand{\chaptermark}[1]{\markboth{\xchaptertitle\, #1}{}}
+% NEW: 重定义章首页的页码样式
+\fancypagestyle{plain}{\renewcommand{\headrulewidth}{0pt}\fancyhf{}\fancyfoot[R]{\color{structurecolor}\bf\custompage} \renewcommand{\headrule}{}}
+\renewcommand{\chaptermark}[1]{\markboth{\xchaptertitle\, #1}{\xchaptertitle\, #1}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\, #1}}
 
 
 \renewcommand*{\maketitle}{%
@@ -1318,8 +1486,11 @@
     {\renewcommand{\arraystretch}{0.618}
     \begin{tabular}{l}
       % \ifcsname @author\endcsname \authorname \@author\\\fi
-      \ifx\@author\empty\else\authorname\cnormal\@author\\ \fi
-      \ifcsname @institute\endcsname \institutename \cnormal\@institute\\ \fi
+      % \ifx\@author\empty\else\authorname\cnormal\@author\\ \fi
+      % NEW: 增加“原著”、“译者”字段
+      \ifcsname @oriauthor\endcsname \oriauthorname \cnormal\@oriauthor\\ \fi
+      \ifcsname @transauthor\endcsname  \transauthorname \cnormal\@transauthor\\ \fi
+      % \ifcsname @institute\endcsname \institutename \cnormal\@institute\\ \fi
       % \ifcsname @date\endcsname  \@date\\\fi
       \ifx\@date\empty\else\datename\cnormal\@date \\ \fi
       \ifcsname @version\endcsname \cnormal\versionname\@version\\ \fi
@@ -1345,8 +1516,11 @@
   \end{center}
   \vfill
 \end{titlepage}
+\thispagestyle{empty}
 \restoregeometry
-\thispagestyle{empty}}
+% NEW: 修复原 elegantbook 的 bug
+\hypersetup{pageanchor=true}
+}
 
 
 \newcommand{\dollar}{\mbox{\textdollar}}
@@ -1420,6 +1594,7 @@
     \else
       \@restonecolfalse
     \fi
+    \pdfbookmark{\contentsname}{Contents}
     \chapter*{\contentsname
         \@mkboth{%
            \MakeUppercase\contentsname}{\MakeUppercase\contentsname}}%
@@ -1432,12 +1607,15 @@
     \if@restonecol\twocolumn\fi
     \hypersetup{linkcolor=winered}}
 
-
-\renewcommand*{\cleardoublepage}{\clearpage\if@twoside \ifodd\c@page\else
-\hbox{}%
-\thispagestyle{empty}%
-\newpage%
-\if@twocolumn\hbox{}\newpage\fi\fi\fi}
+% NEW: 不默认在奇数页开启新的章
+\renewcommand*{\cleardoublepage}{\clearpage%
+% \if@twoside \ifodd\c@page\relax\else%
+% \hbox{}%
+% \thispagestyle{empty}%
+% \newpage%
+% % \vspace*{\fill}{\hspace{1cm}\Large \it 本页特意留白。\par}\vspace{\fill}\newpage%
+% \if@twocolumn\hbox{}\newpage\fi\fi\fi
+}
 
 
 % https://tex.stackexchange.com/questions/56839/chaptername-is-used-even-for-appendix-chapters-in-toc
@@ -1450,6 +1628,7 @@
   \renewcommand{\numberline}[1]{%
   \@cftbsnum #1\@cftasnum~\@cftasnumb ~%
   }
+  \setlength{\cftbeforechapskip}{10pt}
   \g@addto@macro\appendix{%
     % recover \thechapter in the \NR@chapter's \numberline
     \ifELEGANT@Hy@later
@@ -1481,3 +1660,39 @@
 
 % restore the tt default family to lmodern tt family
 \renewcommand\ttdefault{lmtt}
+
+% NEW: 定义章首图片环境
+\NewDocumentEnvironment{artworkfigure}{O{0.96\textwidth} m m O{} O{}}{%
+  \begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+    \begin{scope}
+    \def\ig{%
+    \includegraphics[width=#1,keepaspectratio]{#2}}
+    \node [inner sep=0pt](mypicture) at (0,0) {\phantom{\ig}};
+    \clip[rounded corners=5mm] ($(mypicture.south west)$) rectangle ($(mypicture.north east)$);
+    \node[inner sep=0pt](mypicture) at (0,0) {\ig};
+    \end{scope}
+    
+    % 来源信息（如果有）
+    \if\relax\detokenize{#3}\relax\else
+      \node[inner sep=0pt,right=1ex of mypicture.east,anchor = west]%
+        {\rotatebox{270}{\small \color{black} \sffamily #3}};
+    \fi
+    
+    \draw[black, rounded corners=5mm, line width=1pt] 
+      ($(mypicture.south west)$) rectangle ($(mypicture.north east)$);
+    
+    % 图片注解（如果有）
+    \if\relax\detokenize{#4}\relax\else
+      \node[inner sep=0pt,below=1ex of mypicture.south,anchor = north]%
+        {\parbox{0.77\textwidth}{\citshape \setstretch{1.2} #4}};
+    \fi
+    \end{tikzpicture}
+    
+    % 图片说明（如果有）
+    \if\relax\detokenize{#5}\relax\else
+      \caption*{#5}
+    \fi
+  \end{figure}
+}{}
