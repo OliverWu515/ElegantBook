@@ -17,13 +17,12 @@ The main changes are marked with `%NEW:` comments in `ElegantBook.cls`, mainly i
 
 - 适配 *Linear Algebra Done Right* (4th edition) 原书（下称 LADR4e）不区分定理、引理和命题的写作习惯，统一使用 `theorem` 环境进行排版。
 - 适配 LADR4e 原书的示例（`example`）、章首图片（`artworkfigure`）和边注框（`commentbox`）等。
-- 样式调整：包括目录、页眉、页脚、图题、表题和页码等。
+- 样式调整：包括目录、节编号、页眉、页脚、图题、表题和页码等。
 - 新增样式：添加了 `tcolorbox` 中的“转下页”标记等。
 - 修复了原模板的一些 bug。
-
 - To match the writing convention in LADR4e (where theorems, lemmas, and propositions are not distinguished), everything is typeset using a unified `theorem` environment.
 - Adaptations for LADR4e-specific elements such as examples (`example`), chapter-opening artwork (`artworkfigure`), and margin note boxes (`commentbox`).
-- Style adjustments, including the table of contents, headers, footers, figure/table captions, and page numbers.
+- Style adjustments, including the table of contents, section numbers, headers, footers, figure/table captions, and page numbers.
 - New styles, such as a “continued on next page” marker for `tcolorbox`.
 - Fixes for some bugs in the original template.
 

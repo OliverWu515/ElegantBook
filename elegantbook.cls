@@ -936,7 +936,7 @@
 
 \titlespacing{\chapter}{0pt}{-20pt}{1.3\baselineskip}
 %\titlespacing{\subsection}{0pt}{0.5\baselineskip}{-\baselineskip}
-% 节编号样式
+% NEW: 节编号样式
 \renewcommand{\thesection}{\arabic{chapter}\Alph{section}}
 
 
